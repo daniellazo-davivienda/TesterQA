@@ -133,3 +133,52 @@ function eliminar(index) {
 }
 
 mostrar();
+
+document.getElementById("buscar").addEventListener("input", e => {
+    mostrar(e.target.value.toLowerCase());
+});
+
+function mostrar(filtro = "") {
+    tabla.innerHTML = "";
+    personas
+        .filter(p => p.nombre.toLowerCase().includes(filtro))
+        .forEach((p, index) => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${p.nombre}</td>
+                    <td>${p.edad}</td>
+                    <td>
+                        <button class="editar" onclick="editar(${index})">Editar</button>
+                        <button class="eliminar" onclick="eliminar(${index})">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+        });
+}
+
+if (nombre.trim() === "" || edad <= 0) {
+    alert("Datos inválidos");
+    return;
+}
+
+function eliminar(index) {
+    if (!confirm("¿Seguro que quieres eliminar?")) return;
+
+    personas.splice(index, 1);
+    localStorage.setItem("personas", JSON.stringify(personas));
+    mostrar();
+}
+
+<button type="submit" id="btn">Guardar</button>
+
+///js
+const btn = document.getElementById("btn");
+
+function editar(index) {
+    document.getElementById("nombre").value = personas[index].nombre;
+    document.getElementById("edad").value = personas[index].edad;
+    editIndex = index;
+    btn.textContent = "Actualizar";
+}
+
+btn.textContent = "Guardar";

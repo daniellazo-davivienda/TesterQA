@@ -7,146 +7,129 @@ S3ptiembr325$
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>CRUD Básico</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<nav class="navbar">
-    <h2 class="logo">Mi App</h2>
-    <ul class="menu">
-        <li><a href="#home">Inicio</a></li>
-        <li><a href="#crud">CRUD</a></li>
-        <li><a href="#about">Acerca</a></li>
-    </ul>
-</nav>
+<h1>CRUD Personas</h1>
 
-<section id="home" class="section">
-    <h1>Bienvenido 👋</h1>
-    <p>Selecciona una opción</p>
+<form id="form">
+    <input type="text" id="nombre" placeholder="Nombre" required>
+    <input type="number" id="edad" placeholder="Edad" required>
+    <button type="submit">Guardar</button>
+</form>
 
-    <div class="cards">
-        <div class="card" onclick="irCRUD()">
-            <h3>CRUD Personas</h3>
-            <p>Gestionar datos</p>
-        </div>
-
-        <div class="card">
-            <h3>Reportes</h3>
-            <p>Ver estadísticas</p>
-        </div>
-
-        <div class="card">
-            <h3>Configuración</h3>
-            <p>Ajustes</p>
-        </div>
-    </div>
-</section>
-
-<section id="crud" class="section oculto">
-    <h1>CRUD</h1>
-    <p>Aquí va tu CRUD</p>
-    <button onclick="volver()">Volver</button>
-</section>
-
-<section id="about" class="section oculto">
-    <h1>Acerca de</h1>
-    <p>Proyecto hecho con HTML, CSS y JS</p>
-</section>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tabla"></tbody>
+</table>
 
 <script src="script.js"></script>
 </body>
 </html>
-/// style css
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/// css
 body {
     font-family: Arial, sans-serif;
-    background: #f2f2f2;
+    padding: 20px;
+    background: #f4f4f4;
 }
 
-/* NAVBAR */
-.navbar {
-    background: #222;
-    color: white;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.menu {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.menu a {
-    color: white;
-    text-decoration: none;
-}
-
-.menu a:hover {
-    text-decoration: underline;
-}
-
-/* SECCIONES */
-.section {
-    padding: 40px;
+h1 {
     text-align: center;
 }
 
-.oculto {
-    display: none;
+form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
 }
 
-/* CARDS */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
+input, button {
+    padding: 8px;
 }
 
-.card {
+table {
+    width: 100%;
+    border-collapse: collapse;
     background: white;
-    padding: 25px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.2s;
 }
 
-.card:hover {
-    transform: scale(1.05);
-    background: #eaeaea;
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
 }
+
+button.editar {
+    background: orange;
+    color: white;
+}
+
+button.eliminar {
+    background: red;
+    color: white;
+}
+
 ///js
+let personas = JSON.parse(localStorage.getItem("personas")) || [];
+let editIndex = null;
 
-function mostrarSeccion(id) {
-    document.querySelectorAll(".section").forEach(sec => {
-        sec.classList.add("oculto");
-    });
+const form = document.getElementById("form");
+const tabla = document.getElementById("tabla");
 
-    document.getElementById(id).classList.remove("oculto");
-}
+form.addEventListener("submit", e => {
+    e.preventDefault();
 
-function irCRUD() {
-    mostrarSeccion("crud");
-}
+    const nombre = document.getElementById("nombre").value;
+    const edad = document.getElementById("edad").value;
 
-function volver() {
-    mostrarSeccion("home");
-}
+    if (editIndex === null) {
+        personas.push({ nombre, edad });
+    } else {
+        personas[editIndex] = { nombre, edad };
+        editIndex = null;
+    }
 
-/* Menú */
-document.querySelectorAll(".menu a").forEach(link => {
-    link.addEventListener("click", e => {
-        e.preventDefault();
-        const id = link.getAttribute("href").replace("#", "");
-        mostrarSeccion(id);
-    });
+    localStorage.setItem("personas", JSON.stringify(personas));
+    form.reset();
+    mostrar();
 });
+
+function mostrar() {
+    tabla.innerHTML = "";
+
+    personas.forEach((p, index) => {
+        tabla.innerHTML += `
+            <tr>
+                <td>${p.nombre}</td>
+                <td>${p.edad}</td>
+                <td>
+                    <button class="editar" onclick="editar(${index})">Editar</button>
+                    <button class="eliminar" onclick="eliminar(${index})">Eliminar</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function editar(index) {
+    document.getElementById("nombre").value = personas[index].nombre;
+    document.getElementById("edad").value = personas[index].edad;
+    editIndex = index;
+}
+
+function eliminar(index) {
+    personas.splice(index, 1);
+    localStorage.setItem("personas", JSON.stringify(personas));
+    mostrar();
+}
+
+mostrar();

@@ -4,21 +4,6 @@ S3ptiembr325$
 64261
 8Ctub32025.$
 
-Dijiste:
-que puedo programar con vs code sin permiso de administrador
-ChatGPT dijo:
-Con VS Code puedes programar muchísimas cosas sin permiso de administrador, porque el editor funciona a nivel de usuario y muchos lenguajes también. Aquí tienes ideas claras y prácticas 👇
-
-Lenguajes que puedes usar sin ser admin
-Normalmente basta con descargar versiones portables o que no requieren instalación global:
-
-Python 🐍
-
-Scripts, juegos simples, automatización, bots (sin hackear ni cosas raras).
-
-JavaScript
-
-Apps con Node.js portable
 
 Frontend (HTML/CSS/JS).
 
@@ -30,97 +15,10 @@ TypeScript
 
 Similar a JS, más ordenado.
 
-C / C++
-
-Si ya hay compilador instalado (en algunos colegios lo hay).
-
-Java
-
-Si el JDK ya está disponible o usas versiones portables.
-
-Lua
-
-Muy ligero, usado en juegos.
-
-Markdown
-
-Documentación, apuntes, wikis.
-
-Cosas que puedes programar
-🖥️ Proyectos simples
-Calculadoras
-
-Juegos de consola (ahorcado, piedra-papel-tijeras)
-
-Gestores de tareas
-
-Conversores (moneda, unidades)
-
-🌐 Web
-Páginas web estáticas
-
-Mini juegos en el navegador
-
-Dashboards sencillos
-
-Formularios
-
-🤖 Automatización
-Scripts para renombrar archivos
-
-Analizar texto o datos
-
-Generar PDFs o informes
-
-🎮 Juegos
-Juegos 2D simples (con Python o JS)
-
-Juegos de texto tipo aventura
-
-Simulaciones
-
-📊 Datos
-Leer CSV
-
-Gráficas
-
-Estadísticas básicas
-
-Herramientas que suelen funcionar sin admin
-VS Code portable
-
-Python portable
-
-Node.js portable
-
-Git portable
-
 Navegador (para probar web)
 
-Cosas que normalmente NO puedes hacer sin admin
-Drivers
 
-Apps que modifican el sistema
-
-Servidores en puertos protegidos
-
-Programas que requieren instalación global
-
-Si quieres, dime:
-
-💻 ¿Windows, Mac o Linux?
-
-🎯 ¿Te interesa más juegos, web o automatizar cosas?
-
-📚 ¿Principiante o ya sabes algo?
-
-Y te propongo un proyecto exacto que puedas empezar hoy mismo 👍
-
-Dijiste:
-HTML + CSS 🌐 ayudmae hacer un crud 
-ChatGPT dijo:
-¡Perfecto! Vamos a hacer un CRUD sencillo solo con HTML + CSS + JavaScript, que funciona en el navegador, no necesita permisos de administrador y lo puedes abrir con doble clic 🔥
-
+HTML + CSS 🌐
 CRUD = Crear, Leer, Actualizar, Eliminar
 
 🧠 Qué vamos a construir

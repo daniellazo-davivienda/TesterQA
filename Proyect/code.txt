@@ -1,0 +1,319 @@
+html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>REGISTRO DE MIEMBROS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ///referencia codigo para nav bar -->
+<nav class="navbar">
+    <h2 class="logo">Mi App</h2>
+    <ul class="menu">
+        <li><a href="#home">Inicio</a></li>
+        <li><a href="#crud">CRUD</a></li>
+        <li><a href="#about">Acerca</a></li>
+    </ul>
+</nav>
+
+<!-- ///seccion del home pantalla principal -->
+<section id="home" class="section">
+    <h1>Bienvenido 👋</h1>
+    <p>Selecciona una opción</p>
+<!-- ///cards botones de cruds -->
+    <div class="cards">
+        <div class="card" onclick="irCRUD()">
+            <h3>MIEMBROS</h3>
+            <p>Gestionar datos</p>
+        </div>
+
+        <div class="card">
+            <h3>Reportes</h3>
+            <p>Ver estadísticas</p>
+        </div>
+
+        <div class="card">
+            <h3>Configuración</h3>
+            <p>Ajustes</p>
+        </div>
+    </div>
+</section>
+
+
+<section id="crud" class="section oculto">
+    <h1>MIEMBROS</h1>
+    <p>HOME</p>
+    <button onclick="volver()">Volver</button>
+</section>
+
+<section id="about" class="section oculto">
+    <h1>Acerca de</h1>
+    <p>Proyecto hecho con HTML, CSS y JS</p>
+</section>
+
+<!-- ///cierre de referencia -->
+<h1>MIEMBROS</h1>
+
+<form id="form">
+       
+    <input type="text" id="nombre" placeholder="Nombre" required>
+    <input type="text" id="bau" placeholder="Bau" required>
+    <input type="number" id="edad" placeholder="Edad" required>
+    <button type="submit">Guardar</button>
+</form>
+
+<table>
+     <input type="text" id="buscar" placeholder="Buscar por nombre">
+    <button type="submit" id="btn">buscar</button>
+    <thead>
+        <tr>
+
+            <th>Nombre</th>
+            <th>bau</th>
+            <th>Edad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tabla"></tbody>
+</table>
+
+js
+let personas = JSON.parse(localStorage.getItem("personas")) || [];
+let editIndex = null;
+
+const form = document.getElementById("form");
+const tabla = document.getElementById("tabla");
+
+form.addEventListener("submit", e => {
+
+    
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombre").value;
+    const bau = document.getElementById("bau").value;
+    const edad = document.getElementById("edad").value;
+
+    ///Ciclo para evitar nombres vacios, edades incorrectas
+if (nombre.trim(), bau.trim() === "" || edad <= 0) {
+    alert("Datos inválidos");
+    return;
+}
+    if (editIndex === null) {
+        personas.push({ nombre, bau, edad});
+    } else {
+        personas[editIndex] = { nombre, bau, edad};
+        editIndex = null;
+    }
+
+    localStorage.setItem("personas", JSON.stringify(personas));
+    form.reset();
+    mostrar();
+});
+
+function mostrar() {
+    tabla.innerHTML = "";
+
+    personas.forEach((p, index) => {
+        tabla.innerHTML += `
+            <tr>
+                <td>${p.nombre}</td>
+                <td>${p.bau}</td>
+                <td>${p.edad}</td>
+                <td>
+                    <button class="editar" onclick="editar(${index})">Editar</button>
+                    <button class="eliminar" onclick="eliminar(${index})">Eliminar</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function editar(index) {
+    document.getElementById("nombre").value = personas[index].nombre;
+    document.getElementById("bau").value = personas[index].bau;
+    document.getElementById("edad").value = personas[index].edad;
+  
+    editIndex = index;
+}
+
+function eliminar(index) {
+    personas.splice(index, 1);
+    localStorage.setItem("personas", JSON.stringify(personas));
+    mostrar();
+}
+
+mostrar();
+
+/// filtro de busqueda
+document.getElementById("buscar").addEventListener("input", e => {
+    mostrar(e.target.value.toLowerCase());
+});
+
+function mostrar(filtro = "") {
+    tabla.innerHTML = "";
+    personas
+        .filter(p => p.bau.toLowerCase().includes(filtro), p.nombre.toLowerCase().includes(filtro))
+        .forEach((p, index) => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${p.nombre}</td>
+                    <td>${p.bau}</td>
+                    <td>${p.edad}</td>
+                    <td>
+                        <button class="editar" onclick="editar(${index})">Editar</button>
+                        <button class="eliminar" onclick="eliminar(${index})">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+        });
+}
+const btn = document.getElementById("btn");
+
+function editar(index) {
+    document.getElementById("nombre").value = personas[index].nombre;
+    document.getElementById("bau").value = personas[index].bau;
+    document.getElementById("edad").value = personas[index].edad;
+    editIndex = index;
+    btn.textContent = "Actualizar";
+}
+
+///referencia navbar
+function mostrarSeccion(id) {
+    document.querySelectorAll(".section").forEach(sec => {
+        sec.classList.add("oculto");
+    });
+
+    document.getElementById(id).classList.remove("oculto");
+}
+
+function irCRUD() {
+    mostrarSeccion("crud");
+}
+
+function volver() {
+    mostrarSeccion("home");
+}
+
+/* Menú */
+document.querySelectorAll(".menu a").forEach(link => {
+    link.addEventListener("click", e => {
+        e.preventDefault();
+        const id = link.getAttribute("href").replace("#", "");
+        mostrarSeccion(id);
+    });
+});
+css
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+input, button {
+    padding: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+button.editar {
+    background: orange;
+    color: white;
+}
+
+button.eliminar {
+    background: red;
+    color: white;
+}
+
+/* ///referencia navbar */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #222;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+/* SECCIONES */
+.section {
+    padding: 40px;
+    text-align: center;
+}
+
+.oculto {
+    display: none;
+}
+
+/* CARDS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    background: #eaeaea;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración - Mi App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ///referencia codigo para nav bar -->
+    <nav class="navbar">
+        <h2 class="logo">Mi App</h2>
+        <ul class="menu">
+            <li><a href="#home">Inicio</a></li>
+            <li><a href="#crud">CRUD</a></li>
+            <!-- NUEVO: Enlace a la sección de usuarios, solo visible para admins -->
+            <li class="admin-only"><a href="#usuarios">Usuarios</a></li>
+            <li><a href="#about">Acerca</a></li>
+        </ul>
+        <!-- Área de usuario -->
+        <div class="user-area">
+            <span id="user-welcome"></span>
+            <button id="logout-btn">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <!-- ///seccion del home pantalla principal -->
+    <section id="home" class="section">
+        <h1>Bienvenido 👋</h1>
+        <p>Selecciona una opción</p>
+        <div class="cards">
+            <div class="card" onclick="irCRUD()">
+                <h3>MIEMBROS</h3>
+                <p>Gestionar datos</p>
+            </div>
+            <div class="card">
+                <h3>Reportes</h3>
+                <p>Ver estadísticas</p>
+            </div>
+            <div class="card">
+                <h3>Configuración</h3>
+                <p>Ajustes</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ///seccion del CRUD -->
+    <section id="crud" class="section oculto">
+        <h1>MIEMBROS</h1>
+        <div class="admin-only">
+            <form id="form">
+                <input type="text" id="nombre" placeholder="Nombre" required>
+                <input type="text" id="bau" placeholder="Bau" required>
+                <input type="number" id="edad" placeholder="Edad" required>
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+        <div class="busqueda-container">
+            <input type="text" id="buscar" placeholder="Buscar por nombre o bau">
+            <button type="button" id="btn">Buscar</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Bau</th>
+                    <th>Edad</th>
+                    <th class="admin-only">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla"></tbody>
+        </table>
+        <button onclick="volver()" class="volver-btn">Volver</button>
+    </section>
+
+    <!-- NUEVO: Sección para gestionar usuarios -->
+    <section id="usuarios" class="section oculto">
+        <h1>Gestionar Usuarios</h1>
+        <form id="user-form">
+            <input type="text" id="user-username" placeholder="Usuario" required>
+            <input type="password" id="user-password" placeholder="Contraseña" required>
+            <select id="user-role" required>
+                <option value="">Seleccionar Rol</option>
+                <option value="admin">Administrador</option>
+                <option value="user">Usuario</option>
+            </select>
+            <button type="submit">Guardar Usuario</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="user-tabla"></tbody>
+        </table>
+        <button onclick="volver()" class="volver-btn">Volver</button>
+    </section>
+
+    <section id="about" class="section oculto">
+        <h1>Acerca de</h1>
+        <p>Proyecto hecho con HTML, CSS y JS</p>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
